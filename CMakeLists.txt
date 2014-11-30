@@ -16,6 +16,13 @@ set(CMAKE_MODULE_PATH
 # guard against in-source builds and bad build-type strings
 include(ConfigSafeGuards)
 
+# set cdash buildname
+set(BUILDNAME
+    "${CMAKE_SYSTEM_NAME}-${CMAKE_HOST_SYSTEM_PROCESSOR}-${CMAKE_Fortran_COMPILER_ID}-${cmake_build_type_tolower}"
+    CACHE STRING
+    "Name of build on the dashboard"
+    )
+
 # detect operating system
 message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
@@ -111,13 +118,6 @@ target_link_libraries(
 # activate ctest
 include(CTest)
 enable_testing()
-
-# set cdash buildname
-set(BUILDNAME
-    "${CMAKE_SYSTEM_NAME}-${CMAKE_HOST_SYSTEM_PROCESSOR}-${CMAKE_Fortran_COMPILER_ID}-${cmake_build_type_tolower}"
-    CACHE STRING
-    "Name of build on the dashboard"
-    )
 
 # define a test
 add_test(unit ${PROJECT_BINARY_DIR}/unit_tests)
