@@ -1,0 +1,29 @@
+# stop if cmake version below 2.8
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+
+# project name
+project(example)
+
+# enable fortran, c, and c++ language
+enable_language(Fortran C CXX)
+
+# detect operating system
+message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    add_definitions(-DSYSTEM_LINUX)
+endif()
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+    add_definitions(-DSYSTEM_DARWIN)
+endif()
+if(${CMAKE_SYSTEM_NAME} STREQUAL "AIX")
+    add_definitions(-DSYSTEM_AIX)
+endif()
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    add_definitions(-DSYSTEM_WINDOWS)
+endif()
+
+# detect host processor
+message(STATUS "The host processor is ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+
+# build executable
+add_executable(hello.x hello.F90)
