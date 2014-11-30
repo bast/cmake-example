@@ -7,6 +7,11 @@ project(example)
 # enable fortran, c, and c++ language
 enable_language(Fortran C CXX)
 
+# project version
+set(VERSION_MAJOR 1)
+set(VERSION_MINOR 0)
+set(VERSION_PATCH 0)
+
 # location of additional cmake modules
 set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
@@ -50,9 +55,17 @@ add_executable(hello.x src/hello.F90)
 
 # location of header files
 include_directories(
+    ${PROJECT_BINARY_DIR}
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/external/googletest
     ${PROJECT_SOURCE_DIR}/external/googletest/include
+    )
+
+# configure header file
+# to the source code
+configure_file(
+    ${PROJECT_SOURCE_DIR}/cmake/config.h.in
+    ${PROJECT_BINARY_DIR}/config.h
     )
 
 # static library
