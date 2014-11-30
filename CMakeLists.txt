@@ -26,4 +26,19 @@ endif()
 message(STATUS "The host processor is ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 
 # build executable
-add_executable(hello.x hello.F90)
+add_executable(hello.x src/hello.F90)
+
+# location of header files
+include_directories(${PROJECT_SOURCE_DIR}/src)
+
+# static library
+add_library(mylib_static STATIC src/mylib.cpp)
+
+# shared library
+add_library(mylib_shared SHARED src/mylib.cpp)
+
+# compile main executable
+add_executable(main.x src/main.cpp)
+
+# link library
+target_link_libraries(main.x mylib_static)
