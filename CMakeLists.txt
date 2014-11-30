@@ -24,12 +24,6 @@ include(ConfigSafeGuards)
 # ctest and cdash stuff
 include(ConfigTesting)
 
-# find git
-find_package(Git)
-if(GIT_FOUND)
-    message(STATUS "Git found: ${GIT_EXECUTABLE}")
-endif()
-
 # detect operating system
 message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
@@ -66,6 +60,9 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/external/googletest
     ${PROJECT_SOURCE_DIR}/external/googletest/include
     )
+
+# get git hash
+include(ConfigGitRevision)
 
 # configure header file
 # to the source code
