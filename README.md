@@ -1,6 +1,6 @@
 
 
-cmake-example
+CMake example
 =============
 
-Example CMake project which demonstrates various features.
+Example project which demonstrates various CMake features.

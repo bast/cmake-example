@@ -34,11 +34,23 @@ endif()
 # detect host processor
 message(STATUS "The host processor is ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 
+# example how to set c++ compiler flags for GNU
+if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
+    set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -Wall -Wno-unknown-pragmas -Wno-sign-compare -Woverloaded-virtual -Wwrite-strings -Wno-unused")
+    set(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g3")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+endif()
+
 # build executable
 add_executable(hello.x src/hello.F90)
 
 # location of header files
-include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/external/googletest
+    ${PROJECT_SOURCE_DIR}/external/googletest/include
+    )
 
 # static library
 add_library(mylib_static STATIC src/mylib.cpp)
@@ -51,3 +63,54 @@ add_executable(main.x src/main.cpp)
 
 # link library
 target_link_libraries(main.x mylib_static)
+
+# library that holds sources to test
+add_library(example src/example.cpp)
+
+# target to update git submodules
+add_custom_target(
+    git_update
+    COMMAND git submodule init
+    COMMAND git submodule update
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    )
+
+# google test sources
+add_library(
+    gtest
+    ${PROJECT_SOURCE_DIR}/external/googletest/src/gtest-all.cc
+    ${PROJECT_SOURCE_DIR}/external/googletest/src/gtest_main.cc
+    )
+
+# update git submodules before building google test
+add_dependencies(gtest git_update)
+
+# mark these files as generated (they may not be present at configure time)
+set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/src/gtest-all.cc  PROPERTIES GENERATED 1)
+set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/src/gtest_main.cc PROPERTIES GENERATED 1)
+
+# unit test executable
+add_executable(
+    unit_tests
+    test/main.cpp
+    test/example_add.cpp
+    test/example_subtract.cpp
+    )
+
+# unit test executable depends on google test
+add_dependencies(unit_tests gtest)
+
+# link unit test executable against google test
+target_link_libraries(
+    unit_tests
+    gtest
+    example
+    pthread
+    )
+
+# activate ctest
+include(CTest)
+enable_testing()
+
+# define a test
+add_test(unit ${PROJECT_BINARY_DIR}/unit_tests)
