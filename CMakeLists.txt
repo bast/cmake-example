@@ -7,6 +7,15 @@ project(example)
 # enable fortran, c, and c++ language
 enable_language(Fortran C CXX)
 
+# location of additional cmake modules
+set(CMAKE_MODULE_PATH
+    ${CMAKE_MODULE_PATH}
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake
+    )
+
+# guard against in-source builds and bad build-type strings
+include(ConfigSafeGuards)
+
 # detect operating system
 message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
