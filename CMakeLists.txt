@@ -123,3 +123,11 @@ target_link_libraries(
     example
     pthread
     )
+
+# install binary
+install(TARGETS main.x DESTINATION bin)
+# install libs
+install(TARGETS mylib_shared DESTINATION lib)
+install(TARGETS mylib_static DESTINATION lib)
+# install headers
+install(FILES ${PROJECT_SOURCE_DIR}/src/mylib.h DESTINATION include)
