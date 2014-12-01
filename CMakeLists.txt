@@ -65,7 +65,6 @@ include_directories(
 include(ConfigGitRevision)
 
 # configure header file
-# to the source code
 configure_file(
     ${PROJECT_SOURCE_DIR}/cmake/config.h.in
     ${PROJECT_BINARY_DIR}/config.h
