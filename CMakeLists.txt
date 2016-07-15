@@ -54,8 +54,6 @@ add_executable(hello.x src/hello.F90)
 include_directories(
     ${PROJECT_BINARY_DIR}
     ${PROJECT_SOURCE_DIR}/src
-    ${PROJECT_SOURCE_DIR}/external/googletest
-    ${PROJECT_SOURCE_DIR}/external/googletest/include
     )
 
 # get git hash
@@ -100,25 +98,37 @@ add_library(example src/example.cpp)
 
 # target to update git submodules
 add_custom_target(
-    git_update
+    update_submodules
     COMMAND git submodule init
     COMMAND git submodule update
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     )
 
-# google test sources
-add_library(
-    gtest
-    ${PROJECT_SOURCE_DIR}/external/googletest/src/gtest-all.cc
-    ${PROJECT_SOURCE_DIR}/external/googletest/src/gtest_main.cc
+set(GOOGLETEST_ROOT external/googletest/googletest CACHE STRING "Google Test source root")
+
+message(STATUS "GOOGLETEST_ROOT set to ${GOOGLETEST_ROOT}")
+
+# google test includes
+include_directories(
+    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}
+    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/include
     )
 
-# update git submodules before building google test
-add_dependencies(gtest git_update)
+# google test sources
+set(GOOGLETEST_SOURCES
+    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/src/gtest-all.cc
+    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/src/gtest_main.cc
+    )
 
 # mark these files as generated (they may not be present at configure time)
-set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/src/gtest-all.cc  PROPERTIES GENERATED 1)
-set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/src/gtest_main.cc PROPERTIES GENERATED 1)
+foreach(_source ${GOOGLETEST_SOURCES})
+    set_source_files_properties(${_source} PROPERTIES GENERATED 1)
+endforeach()
+
+add_library(googletest ${GOOGLETEST_SOURCES})
+
+# update git submodules before building google test
+add_dependencies(googletest update_submodules)
 
 # unit test executable
 add_executable(
@@ -129,12 +139,12 @@ add_executable(
     )
 
 # unit test executable depends on google test
-add_dependencies(unit_tests gtest)
+add_dependencies(unit_tests googletest)
 
 # link unit test executable against google test
 target_link_libraries(
     unit_tests
-    gtest
+    googletest
     example
     pthread
     )
