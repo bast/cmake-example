@@ -13,5 +13,5 @@ Example project which demonstrates various CMake features.
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX:PATH=/tmp/foo ..
-make && make install
+make && make test && make install
 ```
