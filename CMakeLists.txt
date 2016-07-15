@@ -19,7 +19,7 @@ set(CMAKE_MODULE_PATH
     )
 
 # guard against in-source builds and bad build-type strings
-include(ConfigSafeGuards)
+include(safeguards)
 
 # ctest and cdash stuff
 include(ConfigTesting)
