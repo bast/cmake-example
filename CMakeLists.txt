@@ -143,4 +143,4 @@ target_link_libraries(
     )
 
 # make install and cpack
-include(ConfigInstall)
+include(install_target)
