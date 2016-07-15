@@ -1,4 +1,5 @@
 find_package(Git)
+
 if(GIT_FOUND)
     execute_process(
         COMMAND ${GIT_EXECUTABLE} rev-list --max-count=1 HEAD

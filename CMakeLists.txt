@@ -73,7 +73,7 @@ include_directories(
     )
 
 # get git hash
-include(ConfigGitRevision)
+include(git_revision)
 
 # configure header file
 configure_file(
