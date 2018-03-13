@@ -1,11 +1,8 @@
 # stop if cmake version below 3.5
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-# project name
-project(example)
-
-# enable fortran, c, and c++ language
-enable_language(Fortran C CXX)
+# project name and supported languages
+project(example Fortran C CXX)
 
 # project version
 set(VERSION_MAJOR 1)
