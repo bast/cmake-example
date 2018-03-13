@@ -2,9 +2,9 @@
 # is inspired by and adapted after https://crascit.com/2015/07/25/cmake-gtest/
 # download and unpack googletest at configure time
 
-macro(fetch_googletest)
+macro(fetch_googletest _download_module_path)
     configure_file(
-        cmake/googletest-download.cmake
+        ${_download_module_path}/googletest-download.cmake
         googletest-download/CMakeLists.txt
         )
 

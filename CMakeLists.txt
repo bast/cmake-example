@@ -53,7 +53,7 @@ include(CTest)
 
 # fetch googletest
 include(cmake/googletest.cmake)
-fetch_googletest()
+fetch_googletest(${PROJECT_SOURCE_DIR}/cmake)
 
 # enable testing
 enable_testing()
