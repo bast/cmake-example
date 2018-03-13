@@ -4,11 +4,6 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 # project name and supported languages
 project(example Fortran C CXX)
 
-# project version
-set(VERSION_MAJOR 1)
-set(VERSION_MINOR 0)
-set(VERSION_PATCH 0)
-
 # guard against in-source builds and bad build-type strings
 include(cmake/safeguards.cmake)
 
@@ -41,6 +36,11 @@ include_directories(
 
 # get git hash
 include(cmake/git_revision.cmake)
+
+# project version
+set(VERSION_MAJOR 1)
+set(VERSION_MINOR 0)
+set(VERSION_PATCH 0)
 
 # configure header file
 configure_file(
