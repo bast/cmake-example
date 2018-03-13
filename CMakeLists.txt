@@ -99,5 +99,8 @@ enable_testing()
 # define tests
 add_subdirectory(test)
 
-# make install and cpack
+# install target
 include(cmake/install_target.cmake)
+
+# cpack
+include(cmake/packaging.cmake)
