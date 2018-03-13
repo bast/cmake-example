@@ -1,5 +1,5 @@
-# stop if cmake version below 2.8
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+# stop if cmake version below 3.5
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 # project name
 project(example)
