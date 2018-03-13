@@ -12,22 +12,8 @@ set(VERSION_PATCH 0)
 # guard against in-source builds and bad build-type strings
 include(cmake/safeguards.cmake)
 
-# detect operating system
+# detect operating system and host processor
 message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    add_definitions(-DSYSTEM_LINUX)
-endif()
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
-    add_definitions(-DSYSTEM_DARWIN)
-endif()
-if(${CMAKE_SYSTEM_NAME} STREQUAL "AIX")
-    add_definitions(-DSYSTEM_AIX)
-endif()
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    add_definitions(-DSYSTEM_WINDOWS)
-endif()
-
-# detect host processor
 message(STATUS "The host processor is ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 
 # example how to set c++ compiler flags for GNU
