@@ -25,15 +25,6 @@ if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 endif()
 
-# build executable
-add_executable(hello.x src/hello.F90)
-
-# location of header files
-include_directories(
-    ${PROJECT_BINARY_DIR}
-    ${PROJECT_SOURCE_DIR}/src
-    )
-
 # get git hash
 include(cmake/git_revision.cmake)
 
@@ -48,36 +39,7 @@ configure_file(
     ${PROJECT_BINARY_DIR}/config.h
     )
 
-# find python
-find_package(PythonInterp)
-if(NOT PYTHONINTERP_FOUND)
-    message(FATAL_ERROR "ERROR: Python interpreter not found. Cannot continue - sorry.")
-endif()
-
-# generate the file
-add_custom_target(
-    generate_file
-    COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/src/generate.py > ${PROJECT_BINARY_DIR}/mylib_generated.cpp
-    )
-
-# mark the file as generated
-set_source_files_properties(${PROJECT_BINARY_DIR}/mylib_generated.cpp PROPERTIES GENERATED 1)
-
-# static library
-add_library(mylib_static STATIC src/mylib.cpp ${PROJECT_BINARY_DIR}/mylib_generated.cpp)
-add_dependencies(mylib_static generate_file)
-
-# shared library
-add_library(mylib_shared SHARED src/mylib.cpp)
-
-# compile main executable
-add_executable(main.x src/main.cpp)
-
-# link library
-target_link_libraries(main.x mylib_static)
-
-# library that holds sources to test
-add_library(example src/example.cpp)
+add_subdirectory(src)
 
 # set cdash buildname
 set(BUILDNAME
@@ -98,9 +60,6 @@ enable_testing()
 
 # define tests
 add_subdirectory(test)
-
-# install target
-include(cmake/install_target.cmake)
 
 # cpack
 include(cmake/packaging.cmake)
