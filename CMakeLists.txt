@@ -9,14 +9,8 @@ set(VERSION_MAJOR 1)
 set(VERSION_MINOR 0)
 set(VERSION_PATCH 0)
 
-# location of additional cmake modules
-set(CMAKE_MODULE_PATH
-    ${CMAKE_MODULE_PATH}
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake
-    )
-
 # guard against in-source builds and bad build-type strings
-include(safeguards)
+include(cmake/safeguards.cmake)
 
 # detect operating system
 message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
@@ -54,7 +48,7 @@ include_directories(
     )
 
 # get git hash
-include(git_revision)
+include(cmake/git_revision.cmake)
 
 # configure header file
 configure_file(
@@ -161,4 +155,4 @@ enable_testing()
 add_test(unit ${PROJECT_BINARY_DIR}/unit_tests)
 
 # make install and cpack
-include(install_target)
+include(cmake/install_target.cmake)
